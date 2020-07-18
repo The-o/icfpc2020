@@ -1,25 +1,17 @@
 <?php
 
-$server_url = $argv[1];
-$player_key = $argv[2];
-echo('ServerUrl: ' . $server_url . '; PlayerKey: ' . $player_key . "\n");
+use Lijinma\Commander;
+use Solution\Client;
 
-$curl = curl_init();
-curl_setopt($curl, CURLOPT_URL, $server_url);
-curl_setopt($curl, CURLOPT_POST, true);
-curl_setopt($curl, CURLOPT_POSTFIELDS, $player_key);
-curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+require __DIR__ . '/vendor/autoload.php';
 
-$body = curl_exec($curl);
-$status_code = curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
+$cmd = new Commander();
 
-if ($status_code != 200) {
-    echo('Unexpected server response:' . "\n");
-    echo('HTTP code: ' . $status_code . "\n");
-    echo('Response body: ' . $body);
-    exit(2);
-}
+$cmd->version('0.0.1')
+    ->command('run <server-url> <player-key>')
+    ->action(function ($serverUrl, $playerKey) {
+        $client = new Client($serverUrl);
+        $client->sendRequest($playerKey);
+    });
 
-print('Server response: ' . $body);
-
-?>
+$cmd->parse($argv);

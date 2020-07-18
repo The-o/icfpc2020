@@ -1,3 +1,3 @@
 #!/bin/sh
 
-php app/index.php "$@" || echo "run error code: $?"
+php app/index.php run "$@" || echo "run error code: $?"
