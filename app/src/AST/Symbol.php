@@ -22,7 +22,7 @@ class Symbol extends Node
 
     public static function create(string $symbol): self
     {
-        return static::$symbols[$symbol] = static::$symbols[$symbol] ?? new Symbol($symbol);
+        return /*static::$symbols[$symbol] = static::$symbols[$symbol] ??*/ new Symbol($symbol);
     }
 
     /**

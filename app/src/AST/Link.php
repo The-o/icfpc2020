@@ -33,6 +33,11 @@ class Link extends Node
         return $this->link;
     }
 
+    /* public function registerEvaluation()
+        {
+        }
+    */
+
     public function jsonSerialize()
     {
         return ":{$this->link}";

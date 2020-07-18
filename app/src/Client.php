@@ -30,5 +30,4 @@ class Client
         print($res->getBody());
     }
 
-
 }

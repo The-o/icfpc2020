@@ -22,7 +22,7 @@ class Number extends Node
 
     public static function create(int $value): self
     {
-        return static::$numbers[$value] = static::$numbers[$value] ?? new Number($value);
+        return /*static::$numbers[$value] = static::$numbers[$value] ??*/ new Number($value);
     }
 
     /**

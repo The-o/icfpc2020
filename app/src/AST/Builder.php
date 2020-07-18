@@ -33,7 +33,7 @@ class Builder
             case substr($token, 0, 1) === ':':
                 return Link::create((int)substr($token, 1));
 
-            case ctype_digit($token):
+            case is_numeric($token):
                 return Number::create((int)$token);
 
             default:

@@ -6,7 +6,6 @@ namespace Solution\AST;
 
 class Tree extends Node
 {
-
     private Node $left;
     private Node $right;
 
@@ -19,7 +18,8 @@ class Tree extends Node
     }
 
 
-    public static function create(Node $left, Node $right): self {
+    public static function create(Node $left, Node $right): self
+    {
         return new static($left, $right);
     }
 
@@ -28,4 +28,19 @@ class Tree extends Node
         return ['ap' => [$this->left, $this->right]];
     }
 
+    /**
+     * Get the value of left
+     */
+    public function getLeft(): Node
+    {
+        return $this->left;
+    }
+
+    /**
+     * Get the value of right
+     */
+    public function getRight(): Node
+    {
+        return $this->right;
+    }
 }
