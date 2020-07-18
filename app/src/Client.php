@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace Solution;
 
-class Client {
+class Client
+{
 
     private string $serverUrl;
 
-    public function __construct(string $serverUrl) {
+    public function __construct(string $serverUrl)
+    {
         $this->serverUrl = $serverUrl;
     }
 
-    public function sendRequest($playerKey) {
+    public function sendRequest($playerKey)
+    {
         $client = new \GuzzleHttp\Client();
 
         $res = $client->request('POST', $this->serverUrl, [
