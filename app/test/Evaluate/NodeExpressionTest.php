@@ -6,10 +6,10 @@ namespace Test\Evaluate;
 
 use PHPUnit\Framework\TestCase;
 use Solution\AST\Builder;
-use Solution\AST\Number;
 use Solution\Evaluate\Context;
 use Solution\Evaluate\LinkStorage;
 use Solution\Evaluate\NodeExpression;
+use Solution\Evaluate\Number;
 use Solution\Evaluate\SymbolStorage;
 use Solution\Evaluate\ValueInterface;
 
@@ -25,7 +25,6 @@ final class NodeExpressionTest extends TestCase
         $ast = $builder->build();
         $symbols = new SymbolStorage();
         $links = new LinkStorage();
-        $links->addLink(42, Number::create(42));
         $context = new Context($symbols, $links);
 
         $expression = new NodeExpression($context, $ast);
@@ -66,10 +65,34 @@ final class NodeExpressionTest extends TestCase
             'Cdr' => ['ap cdr ap ap cons 42 -42', -42],
             'Nil' => ['ap nil 42', true],
             'IsNil True' => ['ap isnil nil', true],
-            'IsNil False' => ['ap isnil ap ap cons 42 -42', false],
-            'Link' => [':42', 42]
+            'IsNil False' => ['ap isnil ap ap cons 42 -42', false]
         ];
     }
+
+    public function testRecursiveLinks()
+    {
+        /**
+         * f (x) = x == 0 ? 42 : f(x - 1)
+         *
+         * f(x) = if0(x)(42)(f(dec(x)))
+         * f(x) = if0(x)(42)(B(f)(dec)(x))
+         * f(x) = C(if0)(42)(x)(B(f)(dec)(x))
+         * f(x) = S(C(if0)(42))(B(f)(dec))(x)
+         * f = S(C(if0)(42))(B(f)(dec))
+         */
+        $ast42 = (new Builder('ap ap s ap ap c if0 42 ap ap b :42 dec'))->build();
+        $astMain = (new Builder('ap :42 10000'))->build();
+        $symbols = new SymbolStorage();
+        $links = new LinkStorage();
+        $context = new Context($symbols, $links);
+
+        $links->addLink(42, new NodeExpression($context, $ast42));
+        $main = new NodeExpression($context, $astMain);
+        $result = $main->eval();
+
+        $this->assertInstanceOf(ValueInterface::class, $result);
+        /** @var ValueInterface $result */
+        $this->assertTrue($result->hasValue());
+        $this->assertEquals(42, $result->getValue());
+    }
 }
-
-

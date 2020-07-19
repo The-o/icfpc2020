@@ -32,22 +32,23 @@ class LinkStorage
 {
 
     /**
-     * @var Node[]
+     * @var ExpressionInterface[]
      */
     private array $links = [];
 
-    public function addLink(int $link, Node $node) {
-        $this->links[$link] = $node;
+    public function addLink(int $link, ExpressionInterface $expr)
+    {
+        $this->links[$link] = $expr;
     }
 
-    public function getLink(Context $context, int $link): ExpressionInterface
+    public function getLink(int $link): ExpressionInterface
     {
-        $node = $this->links[$link] ?? null;
+        $expr = $this->links[$link] ?? null;
 
-        if (!$node) {
+        if (!$expr) {
             throw new RuntimeException("Unknown link :{$link}");
         }
-
-        return new NodeExpression($context, $node);
+        $expr->eval();
+        return clone $expr;
     }
 }

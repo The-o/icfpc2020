@@ -14,10 +14,10 @@ class B extends Operation
     /**
      * @inheritdoc
      */
-    protected function doApply(array $args): ExpressionInterface
+    protected function doEval(array $args): ExpressionInterface
     {
         [$f, $g, $x] = $args;
 
-        return $f->eval()->applyTo($g->applyTo($x));
+        return $f->applyTo($g->applyTo($x))->eval();
     }
 }

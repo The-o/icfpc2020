@@ -12,7 +12,6 @@ use Solution\AST\Tree as TreeNode;
 
 class NodeExpression implements ExpressionInterface
 {
-
     private Context $context;
     private Node $node;
 
@@ -22,8 +21,9 @@ class NodeExpression implements ExpressionInterface
         $this->node = $node;
     }
 
-    public function applyTo(ExpressionInterface $expr): ExpressionInterface {
-        return new Ap($this, $expr);
+    public function applyTo(ExpressionInterface $expr): ExpressionInterface
+    {
+        return $this->eval()->applyTo($expr);
     }
 
     public function eval(): ExpressionInterface
@@ -34,10 +34,9 @@ class NodeExpression implements ExpressionInterface
         switch ($node->getType()) {
             case Node::TYPE_TREE:
                 /** @var TreeNode $node */
-                return (new Ap(
-                    new static($this->context, $node->getLeft()),
-                    new static($this->context, $node->getRight())
-                ))->eval();
+                $leftExpr = new static($this->context, $node->getLeft());
+                $rightExpr = new static($this->context, $node->getRight());
+                return $leftExpr->applyTo($rightExpr)->eval();
 
             case Node::TYPE_NUMBER:
                 /** @var NumberNode $node */
@@ -45,7 +44,7 @@ class NodeExpression implements ExpressionInterface
 
             case Node::TYPE_SYMBOL:
                 /** @var SymbolNode $node */
-                return $this->context->getSymbol($node->getSymbol())->eval();
+                return $this->context->getSymbol($node->getSymbol());
 
             case Node::TYPE_LINK:
                 /** @var LinkNode $node */

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Solution\Evaluate;
 
-class Pair implements ExpressionInterface
+class Pair extends Operation
 {
     use ValueTrait;
 
@@ -13,17 +13,21 @@ class Pair implements ExpressionInterface
         $this->setValue([$car, $cdr]);
     }
 
-    public function applyTo(ExpressionInterface $arg): ExpressionInterface
+    /**
+     * @inheritDoc
+     */
+    protected function doEval(array $args): ExpressionInterface
     {
+        [$arg] = $args;
         [$car, $cdr] = $this->getValue();
-        return new Ap(
-            new Ap ($arg, $car),
-            $cdr
-        );
+
+        return $arg->applyTo($car)->applyTo($cdr)->eval();
     }
 
-    public function eval(): ExpressionInterface
+    public function __clone()
     {
-        return $this;
+        parent::__clone();
+        [$car, $cdr] = $this->getValue();
+        $this->setValue([clone $car, clone $cdr]);
     }
 }

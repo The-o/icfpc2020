@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Solution\Evaluate;
 
+use RuntimeException;
+
 abstract class Operation implements ExpressionInterface
 {
     const NUMARGS = 1;
@@ -13,34 +15,55 @@ abstract class Operation implements ExpressionInterface
     /**
      * @var ExpressionInterface[]
      */
-    private array $args;
+    private array $args = [];
 
-    /**
-     * @param ExpressionInterface[] $args
-     */
-    public function __construct(array $args = [])
-    {
-        $this->args = $args;
-    }
+    private ?ExpressionInterface $result = null;
 
     public function applyTo(ExpressionInterface $arg): ExpressionInterface
     {
-        return count($this->args) === static::NUMARGS - 1
-            ? $this->doApply([...$this->args, $arg])
-            : new static([...$this->args, $arg]);
+        if (count($this->args) === static::NUMARGS) {
+            return $this->eval()->applyTo($arg);
+        }
+        $this->args[] = $arg;
+        return $this;
+    }
+
+    public function eval(): ExpressionInterface
+    {
+        switch (true) {
+            case $this->result !== null:
+                return $this->result;
+
+            case count($this->args) < static::NUMARGS:
+                return $this;
+
+
+            case count($this->args) > static::NUMARGS:
+                throw new RuntimeException('Something went wrong');
+
+            default:
+                $this->result = $this->doEval($this->args);
+                 $this->args = [];
+                return $this->result;
+        }
     }
 
     /**
      * @param ExpressionInterface[] $args
+     *
+     * @return ExpressionInterface
      */
-    abstract protected function doApply(array $args): ExpressionInterface;
+    abstract protected function doEval(array $args): ExpressionInterface;
 
-    public function eval(): ExpressionInterface
+    public function getFreeArgsNum()
     {
-        return $this;
+        return static::NUMARGS - count($this->args);
     }
 
-    public function getFreeArgsNum() {
-        return static::NUMARGS - count($this->args);
+    public function __clone()
+    {
+        $this->args = array_map(function ($arg) {
+            return clone $arg;
+        }, $this->args);
     }
 }

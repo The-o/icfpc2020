@@ -7,12 +7,15 @@ namespace Solution\Evaluate;
 use Solution\Evaluate\ExpressionInterface;
 use Solution\Evaluate\Number;
 
-abstract class UnaryMathOperation implements ExpressionInterface
+abstract class UnaryMathOperation extends Operation
 {
-    use AssertsTrait;
-
-    public function applyTo(ExpressionInterface $arg): ExpressionInterface
+    /**
+     * @inheritdoc
+     */
+    public function doEval(array $args): ExpressionInterface
     {
+        [$arg] = $args;
+
         $arg = $arg->eval();
         $this->assertNumber($arg);
 
@@ -22,11 +25,6 @@ abstract class UnaryMathOperation implements ExpressionInterface
         $value = $this->calculate($arg->getValue());
 
         return new Number($value);
-    }
-
-    public function eval(): ExpressionInterface
-    {
-        return $this;
     }
 
     abstract protected function calculate(int $arg): int;

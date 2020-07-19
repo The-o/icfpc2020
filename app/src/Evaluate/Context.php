@@ -6,8 +6,8 @@ namespace Solution\Evaluate;
 
 use Solution\Evaluate\ExpressionInterface;
 
-class Context {
-
+class Context
+{
     private SymbolStorage $symbols;
     private LinkStorage $links;
 
@@ -17,9 +17,9 @@ class Context {
         $this->links = $links;
     }
 
-    public function getLink($name): ExpressionInterface
+    public function getLink(int $name): ExpressionInterface
     {
-        return $this->links->getLink($this, $name);
+        return $this->links->getLink($name);
     }
 
     public function getSymbol(string $name): ExpressionInterface

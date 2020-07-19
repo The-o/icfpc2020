@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace Solution\Evaluate\Symbol;
 
 use Solution\Evaluate\ExpressionInterface;
+use Solution\Evaluate\Operation;
 
-class IsNil implements ExpressionInterface
+class IsNil extends Operation
 {
-    public function applyTo(ExpressionInterface $arg): ExpressionInterface
+    /**
+     * @inheritDoc
+     */
+    protected function doEval(array $args): ExpressionInterface
     {
-         return $arg->eval() instanceof Nil ? new T() : new F();
-    }
+        [$arg] = $args;
 
-    public function eval(): ExpressionInterface
-    {
-        return $this;
+        return $arg->eval() instanceof Nil ? new T() : new F();
     }
 }

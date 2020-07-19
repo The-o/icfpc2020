@@ -15,7 +15,7 @@ abstract class BinaryMathOperation extends Operation
     /**
      * @inheritdoc
      */
-    public function doApply(array $args): ExpressionInterface
+    public function doEval(array $args): ExpressionInterface
     {
         [$arg1, $arg2] = $args;
 

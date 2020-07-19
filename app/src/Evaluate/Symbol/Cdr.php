@@ -5,16 +5,13 @@ declare(strict_types=1);
 namespace Solution\Evaluate\Symbol;
 
 use Solution\Evaluate\ExpressionInterface;
+use Solution\Evaluate\Operation;
 
-class Cdr implements ExpressionInterface
+class Cdr extends Operation
 {
-    public function applyTo(ExpressionInterface $arg): ExpressionInterface
+    protected function doEval(array $args): ExpressionInterface
     {
-        return $arg->eval()->applyTo(new F());
-    }
-
-    public function eval(): ExpressionInterface
-    {
-        return $this;
+        [$arg] = $args;
+        return $arg->applyTo(new F())->eval();
     }
 }

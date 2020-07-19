@@ -15,6 +15,12 @@ trait ValueTrait
         $this->hasValue = true;
     }
 
+    private function unsetValue()
+    {
+        $this->value = null;
+        $this->hasValue = false;
+    }
+
     public function getValue()
     {
         return $this->value;

@@ -13,12 +13,10 @@ class If0 extends Operation
 {
     const NUMARGS = 3;
 
-    use AssertsTrait;
-
     /**
      * @inheritdoc
      */
-    public function doApply(array $args): ExpressionInterface
+    public function doEval(array $args): ExpressionInterface
     {
         [$flag, $case0, $case1] = $args;
 
@@ -26,6 +24,6 @@ class If0 extends Operation
         $this->assertNumber($flag, 'flag');
 
         /** @var Number $flag */
-        return $flag->getValue() === 0 ? $case0 : $case1;
+        return ($flag->getValue() === 0 ? $case0 : $case1)->eval();
     }
 }

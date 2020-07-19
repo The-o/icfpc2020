@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Solution\Evaluate;
 
-class Number implements ExpressionInterface, ValueInterface
+class Number extends Operation implements ValueInterface
 {
-    use AssertsTrait;
     use ValueTrait;
 
     public function __construct(int $value)
@@ -14,8 +13,10 @@ class Number implements ExpressionInterface, ValueInterface
         $this->setValue($value);
     }
 
-    public function applyTo(ExpressionInterface $arg): ExpressionInterface
+    protected function doEval(array $args): ExpressionInterface
     {
+        [$arg] = $args;
+
         $value = $arg->eval();
         $this->assertNumber($value);
 
@@ -23,10 +24,5 @@ class Number implements ExpressionInterface, ValueInterface
          * @var Number $value
          */
         return new Number($value->getValue() + $this->getValue());
-    }
-
-    public function eval(): ExpressionInterface
-    {
-        return $this;
     }
 }

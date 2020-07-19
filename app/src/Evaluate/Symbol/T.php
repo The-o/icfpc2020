@@ -16,22 +16,27 @@ class T extends Operation implements ValueInterface
 
     use ValueTrait;
 
-    /**
-     * @inheritdoc
-     */
-    public function __construct(array $args = [])
+    public function __construct()
     {
-        parent::__construct($args);
-        $args || $this->setValue(true);
+        $this->setValue(true);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function applyTo(ExpressionInterface $arg): ExpressionInterface
+    {
+        $this->unsetValue();
+        return parent::applyTo($arg);
     }
 
     /**
      * @inheritdoc
      */
-    public function doApply(array $args): ExpressionInterface
+    public function doEval(array $args): ExpressionInterface
     {
         [$arg1, $arg2] = $args;
 
-        return $arg1;
+        return $arg1->eval();
     }
 }

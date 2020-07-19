@@ -15,7 +15,7 @@ class Cons extends Operation
     /**
      * @inheritdoc
      */
-    protected function doApply(array $args): ExpressionInterface
+    protected function doEval(array $args): ExpressionInterface
     {
         [$car, $cdr] = $args;
 
