@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Solution\Evaluate\Symbol;
 
-use Solution\Evaluate\AssertsTrait;
 use Solution\Evaluate\ExpressionInterface;
 use Solution\Evaluate\Number;
 use Solution\Evaluate\Expression;
