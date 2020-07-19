@@ -9,10 +9,16 @@
         }
     ],
     "autoload": {
-        "psr-4": {"Solution\\": "src/"}
+        "psr-4": {
+            "Solution\\": "src/",
+            "Test\\": "test/"
+        }
     },
     "require": {
         "lijinma/commander": "^0.0.4",
         "guzzlehttp/guzzle": "^7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.2"
     }
 }

@@ -4,20 +4,12 @@ declare(strict_types=1);
 
 namespace Solution\Evaluate\Symbol;
 
-use Solution\AST\Node;
-use Solution\Evaluate\AbstractEvaluator;
-use Solution\Evaluate\Number;
+use Solution\Evaluate\UnaryMathOperation;
 
-class Pwr2 extends AbstractEvaluator
+class Pwr2 extends UnaryMathOperation
 {
-    public function doEval(Node ...$args): AbstractEvaluator
+    protected function calculate(int $arg): int
     {
-        [$arg] = $args;
-
-        $arg = $this->evaluator->eval($arg);
-        $this->assertNumber($arg);
-
-        /** @var Number $arg */
-        return new Number($this->evaluator, 2 ** $arg->getValue());
+        return (int)(2 ** $arg);
     }
 }

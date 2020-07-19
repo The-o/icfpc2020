@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Solution\Evaluate;
 
-trait NodeValueTrait
+trait ValueTrait
 {
     private $value = null;
     private bool $hasValue = false;

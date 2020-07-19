@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace Solution\Evaluate\Symbol;
 
-use Solution\AST\Node;
-use Solution\AST\Tree;
-use Solution\Evaluate\AbstractEvaluator;
+use Solution\Evaluate\ExpressionInterface;
+use Solution\Evaluate\Operation;
 
-class B extends AbstractEvaluator
+class B extends Operation
 {
     const NUMARGS = 3;
 
-    protected function doEval(Node ...$args): AbstractEvaluator
+    /**
+     * @inheritdoc
+     */
+    protected function doApply(array $args): ExpressionInterface
     {
         [$f, $g, $x] = $args;
 
-        return $this->evaluator->eval($f)
-            ->eval(Tree::create($g, $x)); //small hack
+        return $f->eval()->applyTo($g->applyTo($x));
     }
 }

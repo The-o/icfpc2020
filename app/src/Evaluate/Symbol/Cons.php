@@ -4,18 +4,21 @@ declare(strict_types=1);
 
 namespace Solution\Evaluate\Symbol;
 
-use Solution\AST\Node;
-use Solution\Evaluate\AbstractEvaluator;
+use Solution\Evaluate\ExpressionInterface;
+use Solution\Evaluate\Operation;
 use Solution\Evaluate\Pair;
 
-class Cons extends AbstractEvaluator
+class Cons extends Operation
 {
     const NUMARGS = 2;
 
-    public function doEval(Node ...$args): AbstractEvaluator
+    /**
+     * @inheritdoc
+     */
+    protected function doApply(array $args): ExpressionInterface
     {
         [$car, $cdr] = $args;
 
-        return new Pair($this->evaluator, $car, $cdr);
+        return new Pair($car, $cdr);
     }
 }

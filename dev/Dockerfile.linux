@@ -2,5 +2,5 @@ FROM composer:1.10
 
 WORKDIR /build
 COPY app .
-RUN composer install
+RUN composer install --no-dev
 RUN tar -czf vendor.tgz vendor

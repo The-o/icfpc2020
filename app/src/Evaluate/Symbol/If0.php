@@ -4,22 +4,28 @@ declare(strict_types=1);
 
 namespace Solution\Evaluate\Symbol;
 
-use Solution\AST\Node;
-use Solution\Evaluate\AbstractEvaluator;
-use Solution\Evaluate\Symbol\If0\If0_Flag;
+use Solution\Evaluate\AssertsTrait;
+use Solution\Evaluate\ExpressionInterface;
+use Solution\Evaluate\Number;
+use Solution\Evaluate\Operation;
 
-class If0 extends AbstractEvaluator
+class If0 extends Operation
 {
     const NUMARGS = 3;
 
-    public function doEval(Node ...$args): AbstractEvaluator
+    use AssertsTrait;
+
+    /**
+     * @inheritdoc
+     */
+    public function doApply(array $args): ExpressionInterface
     {
         [$flag, $case0, $case1] = $args;
 
-        $flag = $this->evaluator->eval($flag);
+        $flag = $flag->eval();
         $this->assertNumber($flag, 'flag');
 
         /** @var Number $flag */
-        return $this->evaluator->eval($flag->getValue() === 0 ? $case0 : $case1);
+        return $flag->getValue() === 0 ? $case0 : $case1;
     }
 }

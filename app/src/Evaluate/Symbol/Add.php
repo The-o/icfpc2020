@@ -4,20 +4,12 @@ declare(strict_types=1);
 
 namespace Solution\Evaluate\Symbol;
 
-use Solution\AST\Node;
-use Solution\Evaluate\AbstractEvaluator;
-use Solution\Evaluate\Number;
+use Solution\Evaluate\BinaryMathOperation;
 
-class Add extends AbstractEvaluator
+class Add extends BinaryMathOperation
 {
-    public function doEval(Node ...$args): AbstractEvaluator
+    protected function calculate(int $arg1, int $arg2): int
     {
-        [$arg] = $args;
-
-        $arg = $this->evaluator->eval($arg);
-        $this->assertNumber($arg);
-
-        /** @var Number $arg */
-        return new Number($this->evaluator, $arg->getValue());
+        return $arg1 + $arg2;
     }
 }

@@ -4,28 +4,29 @@ declare(strict_types=1);
 
 namespace Solution\Evaluate;
 
-use Solution\AST\Node;
-
-class Number extends AbstractEvaluator
+class Number implements ExpressionInterface, ValueInterface
 {
-    use NodeValueTrait;
+    use AssertsTrait;
+    use ValueTrait;
 
-    public function __construct(ASTEvaluator $evaluator, int $value)
+    public function __construct(int $value)
     {
-        parent::__construct($evaluator);
         $this->setValue($value);
     }
 
-    public function doEval(Node ...$args): AbstractEvaluator
+    public function applyTo(ExpressionInterface $arg): ExpressionInterface
     {
-        [$arg] = $args;
-
-        $arg = $this->evaluator->eval($arg);
-        $this->assertNumber($arg);
+        $value = $arg->eval();
+        $this->assertNumber($value);
 
         /**
-         * @var Number $arg
+         * @var Number $value
          */
-        return new Number($this->evaluator, $arg->getValue() + $this->getValue());
+        return new Number($value->getValue() + $this->getValue());
+    }
+
+    public function eval(): ExpressionInterface
+    {
+        return $this;
     }
 }

@@ -4,27 +4,34 @@ declare(strict_types=1);
 
 namespace Solution\Evaluate\Symbol;
 
-use Solution\AST\Node;
-use Solution\Evaluate\AbstractEvaluator;
-use Solution\Evaluate\ASTEvaluator;
-use Solution\Evaluate\NodeValueTrait;
+use Solution\Evaluate\AssertsTrait;
+use Solution\Evaluate\ExpressionInterface;
+use Solution\Evaluate\Operation;
+use Solution\Evaluate\ValueInterface;
+use Solution\Evaluate\ValueTrait;
 
-class F extends AbstractEvaluator
+class F extends Operation implements ValueInterface
 {
     const NUMARGS = 2;
 
-    use NodeValueTrait;
+    use ValueTrait;
 
-    public function __construct(ASTEvaluator $evaluator, Node ...$args)
+    /**
+     * @inheritdoc
+     */
+    public function __construct(array $args = [])
     {
-        parent::__construct($evaluator, ...$args);
+        parent::__construct($args);
         $args || $this->setValue(false);
     }
 
-    public function doEval(Node ...$nodes): AbstractEvaluator
+    /**
+     * @inheritdoc
+     */
+    public function doApply(array $args): ExpressionInterface
     {
-        [$arg1, $arg2] = $nodes;
+        [$arg1, $arg2] = $args;
 
-        return $this->evaluator->eval($arg2);
+        return $arg2;
     }
 }

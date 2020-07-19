@@ -4,26 +4,26 @@ declare(strict_types=1);
 
 namespace Solution\Evaluate;
 
-use Solution\AST\Node;
-
-class Pair extends AbstractEvaluator
+class Pair implements ExpressionInterface
 {
-    use NodeValueTrait;
+    use ValueTrait;
 
-    public function __construct(ASTEvaluator $evaluator, Node $car, Node $cdr)
+    public function __construct($car, $cdr)
     {
-        parent::__construct($evaluator);
         $this->setValue([$car, $cdr]);
     }
 
-    public function doEval(Node ...$nodes): AbstractEvaluator
+    public function applyTo(ExpressionInterface $arg): ExpressionInterface
     {
-        [$node] = $nodes;
         [$car, $cdr] = $this->getValue();
+        return new Ap(
+            new Ap ($arg, $car),
+            $cdr
+        );
+    }
 
-        $func = $this->evaluator->eval($node);
-
-
-        return $func->eval($car)->eval($cdr);
+    public function eval(): ExpressionInterface
+    {
+        return $this;
     }
 }

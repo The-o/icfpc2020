@@ -6,11 +6,11 @@ namespace Solution\Evaluate\Symbol;
 
 use Solution\Evaluate\ExpressionInterface;
 
-class I implements ExpressionInterface
+class IsNil implements ExpressionInterface
 {
     public function applyTo(ExpressionInterface $arg): ExpressionInterface
     {
-         return $arg;
+         return $arg->eval() instanceof Nil ? new T() : new F();
     }
 
     public function eval(): ExpressionInterface
