@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Solution\Evaluate;
 
-class Pair extends Operation
+use JsonSerializable;
+
+class Pair extends Expression implements ValueInterface, JsonSerializable
 {
     use ValueTrait;
 
@@ -29,5 +31,14 @@ class Pair extends Operation
         parent::__clone();
         [$car, $cdr] = $this->getValue();
         $this->setValue([clone $car, clone $cdr]);
+    }
+
+    public function jsonSerialize()
+    {
+        [$car, $cdr] = $this->getValue();
+        return [
+            $car->eval(),
+            $cdr->eval()
+        ];
     }
 }

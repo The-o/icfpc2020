@@ -7,9 +7,9 @@ namespace Solution\Evaluate\Symbol;
 use Solution\Evaluate\AssertsTrait;
 use Solution\Evaluate\ExpressionInterface;
 use Solution\Evaluate\Number;
-use Solution\Evaluate\Operation;
+use Solution\Evaluate\Expression;
 
-class If0 extends Operation
+class If0 extends Expression
 {
     const NUMARGS = 3;
 

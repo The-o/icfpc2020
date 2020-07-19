@@ -6,11 +6,11 @@ namespace Solution\Evaluate\Symbol;
 
 use Solution\Evaluate\AssertsTrait;
 use Solution\Evaluate\ExpressionInterface;
-use Solution\Evaluate\Operation;
+use Solution\Evaluate\Expression;
 use Solution\Evaluate\ValueInterface;
 use Solution\Evaluate\ValueTrait;
 
-class T extends Operation implements ValueInterface
+class T extends Expression implements ValueInterface
 {
     const NUMARGS = 2;
 

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Solution\Evaluate\Symbol;
 
-use Solution\Evaluate\BinaryCompareOperation;
+use Solution\Evaluate\BinaryCompareExpression;
 
-class Lt extends BinaryCompareOperation
+class Lt extends BinaryCompareExpression
 {
 
     protected function compare(int $arg1, int $arg2): bool

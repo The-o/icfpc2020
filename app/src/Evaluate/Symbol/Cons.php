@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Solution\Evaluate\Symbol;
 
 use Solution\Evaluate\ExpressionInterface;
-use Solution\Evaluate\Operation;
+use Solution\Evaluate\Expression;
 use Solution\Evaluate\Pair;
 
-class Cons extends Operation
+class Cons extends Expression
 {
     const NUMARGS = 2;
 

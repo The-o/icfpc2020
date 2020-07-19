@@ -6,9 +6,9 @@ namespace Solution\Evaluate;
 
 use Solution\Evaluate\ExpressionInterface;
 use Solution\Evaluate\Number;
-use Solution\Evaluate\Operation;
+use Solution\Evaluate\Expression;
 
-abstract class BinaryMathOperation extends Operation
+abstract class BinaryMathExpression extends Expression
 {
     const NUMARGS = 2;
 

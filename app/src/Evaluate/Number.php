@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Solution\Evaluate;
 
-class Number extends Operation implements ValueInterface
+use JsonSerializable;
+
+class Number extends Expression implements ValueInterface, JsonSerializable
 {
     use ValueTrait;
 
@@ -24,5 +26,10 @@ class Number extends Operation implements ValueInterface
          * @var Number $value
          */
         return new Number($value->getValue() + $this->getValue());
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->value;
     }
 }

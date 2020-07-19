@@ -6,7 +6,7 @@ namespace Solution\Evaluate;
 
 use RuntimeException;
 
-abstract class Operation implements ExpressionInterface
+abstract class Expression implements ExpressionInterface
 {
     const NUMARGS = 1;
 
@@ -43,7 +43,7 @@ abstract class Operation implements ExpressionInterface
 
             default:
                 $this->result = $this->doEval($this->args);
-                 $this->args = [];
+                $this->args = [];
                 return $this->result;
         }
     }

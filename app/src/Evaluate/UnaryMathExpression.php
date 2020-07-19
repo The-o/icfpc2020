@@ -7,7 +7,7 @@ namespace Solution\Evaluate;
 use Solution\Evaluate\ExpressionInterface;
 use Solution\Evaluate\Number;
 
-abstract class UnaryMathOperation extends Operation
+abstract class UnaryMathExpression extends Expression
 {
     /**
      * @inheritdoc

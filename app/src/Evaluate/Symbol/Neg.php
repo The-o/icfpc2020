@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Solution\Evaluate\Symbol;
 
-use Solution\Evaluate\UnaryMathOperation;
+use Solution\Evaluate\UnaryMathExpression;
 
-class Neg extends UnaryMathOperation
+class Neg extends UnaryMathExpression
 {
     protected function calculate(int $arg): int
     {

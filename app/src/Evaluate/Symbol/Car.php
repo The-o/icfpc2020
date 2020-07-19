@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Solution\Evaluate\Symbol;
 
 use Solution\Evaluate\ExpressionInterface;
-use Solution\Evaluate\Operation;
+use Solution\Evaluate\Expression;
 
-class Car extends Operation
+class Car extends Expression
 {
     protected function doEval(array $args): ExpressionInterface
     {

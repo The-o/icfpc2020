@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Solution\Evaluate\Symbol;
 
-use Solution\Evaluate\BinaryMathOperation;
+use Solution\Evaluate\BinaryMathExpression;
 
-class Add extends BinaryMathOperation
+class Add extends BinaryMathExpression
 {
     protected function calculate(int $arg1, int $arg2): int
     {

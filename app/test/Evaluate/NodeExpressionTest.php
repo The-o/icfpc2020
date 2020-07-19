@@ -95,4 +95,22 @@ final class NodeExpressionTest extends TestCase
         $this->assertTrue($result->hasValue());
         $this->assertEquals(42, $result->getValue());
     }
+
+    public function testExpressionResultsCacheing()
+    {
+        // s i i (cons 42) t = cons 42 (cons 42) t = t 42 (cons 42) = 42
+
+        $ast = (new Builder('ap ap ap ap s i i ap cons 42 t'))->build();
+        $symbols = new SymbolStorage();
+        $links = new LinkStorage();
+        $context = new Context($symbols, $links);
+
+        $main = new NodeExpression($context, $ast);
+        $result = $main->eval();
+
+        $this->assertInstanceOf(ValueInterface::class, $result);
+        /** @var ValueInterface $result */
+        $this->assertTrue($result->hasValue());
+        $this->assertEquals(42, $result->getValue());
+    }
 }

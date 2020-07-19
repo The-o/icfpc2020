@@ -6,11 +6,11 @@ namespace Solution\Evaluate;
 
 use Solution\Evaluate\ExpressionInterface;
 use Solution\Evaluate\Number;
-use Solution\Evaluate\Operation;
+use Solution\Evaluate\Expression;
 use Solution\Evaluate\Symbol\F;
 use Solution\Evaluate\Symbol\T;
 
-abstract class BinaryCompareOperation extends Operation
+abstract class BinaryCompareExpression extends Expression
 {
     const NUMARGS = 2;
 
