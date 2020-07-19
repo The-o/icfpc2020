@@ -5,15 +5,13 @@ declare(strict_types=1);
 namespace Solution\Command;
 
 use Capsule\Di\Definitions;
-use Exception;
 use Solution\Client;
 use Solution\Evaluate\Compiler;
-use Solution\Evaluate\Expression;
 use Solution\Evaluate\Helper;
 
 class Run
 {
-    public function eval(string $serverUrl, string $playerKey, $commands)
+    public function eval(string $serverUrl, string $playerKey, $sources)
     {
         $def = new Definitions();
         $def->object(Client::class)
@@ -23,15 +21,14 @@ class Run
 
         $compiler = new Compiler($container);
 
-        if (substr($commands, 0, 1) == '@') {
-            $file = substr($commands, 1);
-            $path = getcwd() . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $file);
-            $commands = file_get_contents($path);
-        } else {
-            $commands = "galaxy = ${commands}";
+        foreach ($sources as $source) {
+            if (substr($source, 0, 1) == '@') {
+                $file = substr($source, 1);
+                $path = getcwd() . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $file);
+                $source = file_get_contents($path);
+            }
+            $expr = $compiler->compile($source);
         }
-
-        $expr = $compiler->compile($commands);
 
         $result = $expr->eval();
 

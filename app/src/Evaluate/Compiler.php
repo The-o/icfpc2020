@@ -10,33 +10,46 @@ use Solution\AST\Builder;
 class Compiler
 {
     private Container $container;
+    private LinkStorage $links;
+    private SymbolStorage $symbols;
+    private Context $context;
 
     public function __construct(Container $container)
     {
         $this->container = $container;
+        $this->links = new LinkStorage();
+        $this->symbols = new SymbolStorage($this->container);
+        $this->context = new Context($this->symbols, $this->links);
     }
 
-    public function compile($instructions): ExpressionInterface
+    public function compile($code): ExpressionInterface
     {
-        $links = new LinkStorage();
-        $symbols = new SymbolStorage($this->container);
-        $context = new Context($symbols, $links);
-
-        foreach (explode("\n", $instructions) as $line) {
-            [$link, $code] = array_map('trim', explode('=', $line, 2));
-
-            $ast = (new Builder($code))->build();
-            $expr = new NodeExpression($context, $ast);
-
-            if ($link === 'galaxy') {
-                $link = ':-42';
+        $finalExpr = null;
+        foreach (explode("\n", $code) as $line) {
+            if (strpos($line, '=') !== false) {
+                $this->compileLink($line);
+                continue;
             }
-
-            $link = (int)substr($link, 1);
-
-            $links->addLink($link, $expr);
+            $ast = (new Builder($line))->build();
+            $finalExpr = new NodeExpression($this->context, $ast);
         }
 
-        return $context->getLink(-42);
+        return $finalExpr ?? $this->links->getLink(-42);
+    }
+
+    private function compileLink($line)
+    {
+        [$link, $code] = array_map('trim', explode('=', $line, 2));
+
+        $ast = (new Builder($code))->build();
+        $expr = new NodeExpression($this->context, $ast);
+
+        if ($link === 'galaxy') {
+            $link = ':-42';
+        }
+
+        $link = (int)substr($link, 1);
+
+        $this->links->addLink($link, $expr);
     }
 }
